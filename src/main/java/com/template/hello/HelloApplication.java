@@ -43,7 +43,7 @@ public class HelloApplication {
                 .logStartupInfo(false)
                 .run(args);
 
-        System.out.println(String.format("startup: %s seconds", (System.nanoTime() - x) / 1_000_000_000));
+        System.out.println(String.format("startup: %s ms", (System.nanoTime() - x) / 1_000_000));
     }
 
 
@@ -60,7 +60,7 @@ public class HelloApplication {
         }
 
         @GetMapping(value = "/cat", produces = MediaType.IMAGE_PNG_VALUE)
-        private Mono<byte[]> getCat2() {
+        private Mono<byte[]> getCat() {
             return webClient.get().uri("https://cataas.com/cat").exchange()
                     .flatMap(response -> response.bodyToMono(ByteArrayResource.class))
                     .map(ByteArrayResource::getByteArray);
