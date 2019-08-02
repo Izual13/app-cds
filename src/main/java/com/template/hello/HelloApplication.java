@@ -1,54 +1,42 @@
 package com.template.hello;
 
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.runtime.Micronaut;
+import io.reactivex.Maybe;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-@SpringBootApplication
 public class HelloApplication {
 
 
-    @Bean
-    public WebClient webClient() {
-        return WebClient.create();
+    @Client("https://cataas.com")
+    public interface CatClient {
+        @Get("/cat")
+        Maybe<byte[]> getRandomCat();
     }
 
     public static void main(String[] args) {
-        long x = System.nanoTime();
+        long start = System.nanoTime();
         System.out.println("http://localhost:8080");
-        new SpringApplicationBuilder(HelloApplication.class)
-                .logStartupInfo(false)
-                .run(args);
-
-        System.out.println(String.format("startup: %s ms", (System.nanoTime() - x) / 1_000_000));
+        Micronaut.run(HelloApplication.class);
+        System.out.println(String.format("startup: %s ms", (System.nanoTime() - start) / 1_000_000));
     }
 
 
-    @RestController
-    @RequestMapping("/api")
+    @Controller("/api")
     @RequiredArgsConstructor
     public static class HelloController {
+        private final CatClient catClient;
 
-        private final WebClient webClient;
-
-        @GetMapping("/hello")
-        public Mono<String> hello() {
-            return Mono.create(s -> s.success("Ok!"));
+        @Get("/hello")
+        public Maybe<String> hello() {
+            return Maybe.create(s -> s.onSuccess("Ok!"));
         }
 
-        @GetMapping(value = "/cat", produces = MediaType.IMAGE_PNG_VALUE)
-        private Mono<byte[]> getCat() {
-            return webClient.get().uri("https://cataas.com/cat").exchange()
-                    .flatMap(response -> response.bodyToMono(ByteArrayResource.class))
-                    .map(ByteArrayResource::getByteArray);
+        @Get(value = "/cat", produces = "image/png")
+        private Maybe<byte[]> getCat() {
+            return catClient.getRandomCat();
         }
     }
 
