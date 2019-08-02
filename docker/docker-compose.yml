@@ -4,13 +4,17 @@ services:
     image: "postgres:12"
     container_name: "postgres"
     ports:
-      - "54320:5432"
+      - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data
-  app:
-    image: "hello"
-    container_name: "app"
-    ports:
-      - "8181:8080"
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "user"
+      POSTGRES_DB: "hello"
+#  app:
+#    image: "hello"
+#    container_name: "app"
+#    ports:
+#      - "8181:8080"
 volumes:
   data:
