@@ -1,5 +1,3 @@
 # app-cds
 
-1. gradlew clean assemble
-2. docker build -f docker/Dockerfile -t hello .
-3. docker run -p 8080:8080 hello
+gradlew clean assemble && docker build -f docker/Dockerfile -t hello . && docker run -p 8080:8080 hello
