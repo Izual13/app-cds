@@ -25,7 +25,7 @@ public class HelloApplication {
         long start = System.nanoTime();
         System.out.println("http://localhost:8080");
         new SpringApplicationBuilder(HelloApplication.class)
-//                .logStartupInfo(false)
+                .logStartupInfo(false)
                 .run(args);
 
         System.out.println(String.format("startup: %s ms", (System.nanoTime() - start) / 1_000_000));
