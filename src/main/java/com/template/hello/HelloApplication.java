@@ -1,6 +1,7 @@
 package com.template.hello;
 
 import com.template.hello.dao.HelloRepository;
+import com.template.hello.dao.Stub;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -18,7 +19,7 @@ public class HelloApplication {
 
     public static void main(String[] args) {
         long start = System.nanoTime();
-        System.out.println("http://localhost:8080");
+        System.out.println("http://localhost:8080/api/stub");
         new SpringApplicationBuilder(HelloApplication.class)
                 .logStartupInfo(false)
                 .run(args);
@@ -49,8 +50,8 @@ public class HelloApplication {
         }
 
         @GetMapping(value = "/stub", produces = MediaType.APPLICATION_JSON_VALUE)
-        private Flux<HelloRepository.Stub> getStubs() {
-            return helloRepository.get();
+        private Flux<Stub> getStubs() {
+            return helloRepository.findAll();
         }
     }
 

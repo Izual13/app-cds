@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
-@Component
+//@Component
 @ConfigurationProperties("database")
 public class DataBaseProperties {
     private String host;

@@ -5,16 +5,16 @@ services:
     container_name: "postgres"
     ports:
       - "5432:5432"
-    volumes:
-      - data:/var/lib/postgresql/data
+#    volumes:
+#      - data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: "password"
-      POSTGRES_USER: "user"
-      POSTGRES_DB: "hello"
+#      POSTGRES_USER: "user"
+#      POSTGRES_DB: "hello"
 #  app:
 #    image: "hello"
 #    container_name: "app"
 #    ports:
 #      - "8181:8080"
-volumes:
-  data:
+#volumes:
+#  data:
