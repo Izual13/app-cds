@@ -1,5 +1,6 @@
 package com.template.hello;
 
+import com.template.hello.dao.HelloRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -17,6 +18,7 @@ public class HelloApplication {
     public static void main(String[] args) {
         long start = System.nanoTime();
         System.out.println("http://localhost:8080/api/stub");
+        System.out.println("http://localhost:8080/api/hello");
         new SpringApplicationBuilder(HelloApplication.class)
                 .logStartupInfo(false)
                 .run(args);
@@ -31,9 +33,12 @@ public class HelloApplication {
     public static class HelloController {
 
         private final WebClient webClient;
+        private final HelloRepository helloRepository;
 
         @GetMapping("/hello")
         public Mono<String> hello() {
+            System.out.println(helloRepository.count());
+
             return Mono.create(s -> s.success("Ok!"));
         }
 
