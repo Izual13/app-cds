@@ -1,7 +1,5 @@
 package com.template.hello;
 
-import com.template.hello.dao.HelloRepository;
-import com.template.hello.dao.Stub;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
@@ -28,14 +25,12 @@ public class HelloApplication {
     }
 
 
-
     @RestController
     @RequestMapping("/api")
     @RequiredArgsConstructor
     public static class HelloController {
 
         private final WebClient webClient;
-        private final HelloRepository helloRepository;
 
         @GetMapping("/hello")
         public Mono<String> hello() {
@@ -49,10 +44,6 @@ public class HelloApplication {
                     .map(ByteArrayResource::getByteArray);
         }
 
-        @GetMapping(value = "/stub", produces = MediaType.APPLICATION_JSON_VALUE)
-        private Flux<Stub> getStubs() {
-            return helloRepository.findAll();
-        }
     }
 
 }
