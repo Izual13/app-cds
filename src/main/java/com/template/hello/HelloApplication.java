@@ -39,6 +39,9 @@ public class HelloApplication {
         public Mono<String> hello() {
             System.out.println(helloRepository.count());
 
+            //throws exception ->
+            System.out.println(helloRepository.findAll());
+
             return Mono.create(s -> s.success("Ok!"));
         }
 
